@@ -47,13 +47,65 @@ SELECT c.num_referencia, a.lugar
 FROM almacenes a
 natural join cajas c;
 
--- 8
+-- 8 Obtener el número de cajas que hay en cada almacén.
 SELECT id_almacen, COUNT(id_almacen)
 FROM cajas
 GROUP BY id_almacen;
 
-SELECT a.id_almacen, COUNT(a.id_almacen)
+SELECT a.id_almacen, COUNT(c.id_almacen)
 FROM almacenes a
 LEFT JOIN cajas c
 ON a.id_almacen = c.id_almacen
 GROUP BY a.id_almacen;
+
+-- 9 Obtener los códigos de los almacenes que están saturados 
+-- (los almacenes donde el número de cajas es superior a la capacidad).
+
+SELECT a.id_almacen 
+FROM almacenes a
+WHERE a.capacidad < (SELECT COUNT(c.id_almacen) FROM cajas c WHERE a.id_almacen = c.id_almacen);
+
+
+-- 10. Obtener los números de referencia de las cajas que están en Badalona
+SELECT num_referencia
+FROM cajas
+NATURAL JOIN almacenes
+WHERE lugar = "Badalona";
+
+-- 11. Insertar un nuevo almacén en Bilbao con capacidad para 3 cajas. 
+INSERT INTO almacenes(lugar, capacidad) VALUES ('Bilbao', 3);
+
+-- 12. Insertar una nueva caja, con número de referencia ‘H5RT’, 
+-- con contenido ‘Papel’, valor 200, y situada en el almacén 2.
+INSERT INTO cajas (num_referencia, contenido, valor, id_almacen ) 
+VALUES ('H5RZ', "papel", 200, 2);
+
+-- 13. Rebajar el valor de todas las cajas un 15 %
+UPDATE cajas set valor = valor * 0.85;
+
+-- 14. Rebajar un 20 % el valor de todas las cajas cuyo valor 
+-- sea superior al valor medio de todas las cajas. 
+SET @promedio = (SELECT AVG(valor) FROM cajas);
+SELECT @promedio;
+UPDATE cajas set valor = valor * 0.8
+WHERE valor > @promedio;
+
+-- 15. Eliminar todas las cajas cuyo valor sea inferior a 100
+DELETE FROM cajas WHERE valor < 100;
+
+-- 16. Vaciar el contenido de los almacenes que están saturados.
+DELETE c
+FROM cajas c
+JOIN (
+    SELECT a.id_almacen
+    FROM almacenes a
+    JOIN cajas cc ON a.id_almacen = cc.id_almacen
+    GROUP BY a.id_almacen, a.capacidad
+    HAVING a.capacidad < COUNT(cc.id_almacen)
+) AS sub ON c.id_almacen = sub.id_almacen;
+
+
+
+
+
+
