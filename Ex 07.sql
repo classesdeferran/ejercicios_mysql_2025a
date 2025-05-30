@@ -110,12 +110,19 @@ WHERE (iva = 0.21 OR descuento_fac = 10) AND cod_cli = 1;
 SELECT cod_fac, cod_lin_fac FROM lineas_fac
 WHERE cant_lin * precio > 100;
 
+-- 12. Importe medio por factura, sin considerar descuentos ni impuestos. 
+-- El importe de una factura se calcula sumando el producto de la cantidad por el precio de sus líneas.
+SELECT AVG(precio * cant_lin) as media FROM lineas_fac GROUP BY cod_fac;
+
+-- 13. Stock medio, máximo, y mínimo de los articulos que contienen la letra o en la segunda posición 
+-- de su descripción y cuyo stock mínimo es superior a la mitad de su stock actual.
+SELECT descripcion_art, AVG(stock_art) as media, MAX(stock_art) as maximo, MIN(stock_art) as minimo
+FROM articulos
+WHERE descripcion_art like "_o%" AND stock_min > (stock_art / 2)
+GROUP BY descripcion_art;	
 /*
- 
-12. Importe medio por factura, sin considerar descuentos ni impuestos. El importe de una factura se 
-calcula sumando el producto de la can8dad por el precio de sus líneas. 
-13. Stock medio, máximo, y mínimo de los arYculos que con8enen la letra A en la segunda posición 
-de su descripción y cuyo stock mínimo es superior a la mitad de su stock actual. 
+
+
 14. Número de facturas para cada año. Junto con el año debe aparecer el número de facturas de ese 
 año. 
 15. Número de facturas de cada cliente, pero sólo se deben mostrar aquellos clientes que 8enen más 
