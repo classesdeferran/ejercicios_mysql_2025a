@@ -82,12 +82,13 @@ insert into articulos (descripcion_art, precio_art, stock_art, stock_min) VALUES
 SELECT cod_art, (precio_art * 2) as "precio doble" FROM articulos;
 
 -- 4. Mostrar el código de la factura, número de línea e importe de cada línea (sin considerar impuestos ni descuentos). 
+SELECT cod_lin_fac, cod_fac, precio FROM lineas_fac;
 
+-- 5. Mostrar los distintos tipos de IVA aplicados en las facturas. 
+SELECT distinct(iva) FROM facturas;
 
 
 /*
- 
-3.  
 
 5. Mostrar los dis8ntos 8pos de IVA aplicados en las facturas. 
 8
