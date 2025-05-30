@@ -22,7 +22,9 @@ direccion_cli varchar(100) not null,
 codpostal_cli char(5),
 cod_pue char(3)
 );
-insert into clientes ();
+insert into clientes (nombre_cliente, direccion_cli, codpostal_cli, cod_pue) VALUES 
+("Peter Parker", "Corsega 400", "08045", "COR"), ("Robin Hood", "C/ Del chorizo", 08999, "COL"), 
+("Anibal Lecter", "C/ Del vegano", "18300", "TOS"), ("Aitana Bonmatí", "C/ Gamper", 40666, "TRE"); 
 
 CREATE TABLE vendedores (
 cod_ven int not null primary key auto_increment,
@@ -31,6 +33,10 @@ direccion_ven varchar(100) not null,
 codpostal_ven char(5),
 cod_pue char(3)
 );
+insert into vendedores (nombre_vendedor,direccion_ven,codpostal_ven,cod_pue) VALUES 
+("Jan Laporta","C/ Gamper", 40666, "TRE"), ("Florentino","C/ Del chorizo", 08999, "COL");
+
+
 CREATE TABLE articulos (
 cod_art int not null primary key auto_increment,
 descripcion_art varchar(100) not null,
@@ -46,6 +52,11 @@ cod_cli int,
 iva int,
 descuento_fac decimal(5,2)
 );
+alter table facturas modify iva decimal(5,2);
+insert into facturas (fecha_fac, cod_ven, cod_cli, iva, descuento_fac) VALUES
+("2025-05-30", 1, 2, 0.21, 5), ("2025-04-15", 1, 1, 0.21, 10), 
+("2025-05-30", 1, 2, 0.21, 5), ("2025-04-12", 2, 4, 0.21, 20) ;
+
 CREATE TABLE lineas_fac (
 cod_lin_fac int not null primary key auto_increment,
 cod_fac int,
@@ -54,6 +65,10 @@ cod_art int,
 precio decimal(8,2),
 descuento_lin decimal(5,2)
 );
+insert into lineas_fac (cod_fac,cant_lin,cod_art, precio, descuento_lin) VALUES
+(1, 2, 2, 250, .1), (2, 2, 1, 30, .05), (3, 3, 3, 400, .1), (3, 2, 1, 30, .05);
+
+
 insert into provincias (cod_pro, nombre_provincia) VALUES
 ("BA", "Barcelona"), ("GI", "Girona"), ("TA", "Tarragona"), ("LL", "Lleida");
 
@@ -67,6 +82,8 @@ insert into articulos (descripcion_art, precio_art, stock_art, stock_min) VALUES
 SELECT cod_art, (precio_art * 2) as "precio doble" FROM articulos;
 
 -- 4. Mostrar el código de la factura, número de línea e importe de cada línea (sin considerar impuestos ni descuentos). 
+
+
 
 /*
  
