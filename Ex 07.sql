@@ -92,20 +92,26 @@ SELECT cod_pro, nombre_provincia
 FROM provincias
 WHERE cod_pro < "HH";
 
+-- 8. Mostrar el código y descripción de aquellos articulos cuyo stock es igual o supera los 2 unidades.
+SELECT cod_art, descripcion_art FROM articulos WHERE stock_art > 2;
+ 
+-- 9. Mostrar el código y fechas de las facturas con IVA 21 y que pertenecen al cliente de código 2.
+SELECT cod_fac, fecha_fac 
+FROM facturas
+WHERE iva = 0.21 AND cod_cli = 2;
+
+-- 10. Mostrar el código y fechas de las facturas con IVA 21 
+-- o con descuento 10% y que pertenecen al cliente de código 1. 
+SELECT cod_fac, fecha_fac FROM facturas
+WHERE (iva = 0.21 OR descuento_fac = 10) AND cod_cli = 1;
+
+-- 11. Mostrar el código de la factura y el número de línea de las facturas 
+-- cuyas líneas superan 100€ sin considerar descuentos ni impuestos.
+SELECT cod_fac, cod_lin_fac FROM lineas_fac
+WHERE cant_lin * precio > 100;
 
 /*
-
-
-
-7. Mostrar los dis8ntos 8pos de descuento de aplicados por los vendedores que cuyos códigos no 
-superan el valor 50. 
  
-8. Mostrar el código y descripción de aquellos arYculos cuyo stock es igual o supera los 50 unidades. 
-9. Mostrar el código y fechas de las facturas con IVA 16 y que pertenecen al cliente de código 100. 
-10. Mostrar el código y fechas de las facturas con IVA 16 o con descuento 20 y que pertenecen al 
-cliente de código 100. 
-11. Mostrar el código de la factura y el número de línea de las facturas cuyas líneas superan 100 Bs sin 
-considerar descuentos ni impuestos. 
 12. Importe medio por factura, sin considerar descuentos ni impuestos. El importe de una factura se 
 calcula sumando el producto de la can8dad por el precio de sus líneas. 
 13. Stock medio, máximo, y mínimo de los arYculos que con8enen la letra A en la segunda posición 
