@@ -10,6 +10,11 @@ cod_pue char(3) not null primary key,
 nombre_pueblo varchar(50),
 cod_pro char(2) not null
 );
+insert into pueblos (cod_pue, nombre_pueblo, cod_pro) VALUES 
+("HOS", "Hospitalet", 1), ("COR", "Cornellà", 1), ("ESP", "ESPLUGUES", 1), 
+("COL", "Santa Coloma", 1), ("Cun", "Cunit", 3), ("Van", "Vandellòs", 3), 
+("SER", "Seròs", 4), ("TRE", "Tremp", 4), ("BAN", "Banyoles", 4), ("TOS", "Tossa", 4);
+
 CREATE TABLE clientes (
 cod_cli int not null primary key auto_increment,
 nombre_cliente varchar(100) not null,
@@ -17,6 +22,8 @@ direccion_cli varchar(100) not null,
 codpostal_cli char(5),
 cod_pue char(3)
 );
+insert into clientes ();
+
 CREATE TABLE vendedores (
 cod_ven int not null primary key auto_increment,
 nombre_vendedor varchar(100) not null,
@@ -49,20 +56,22 @@ descuento_lin decimal(5,2)
 );
 insert into provincias (cod_pro, nombre_provincia) VALUES
 ("BA", "Barcelona"), ("GI", "Girona"), ("TA", "Tarragona"), ("LL", "Lleida");
-SELECT nombre_provincia FROM provincias;
 
+--  1. Mostrar las provincias, -- 2. Nombre y código de las provincias.
+SELECT nombre_provincia, cod_pro FROM provincias;
+
+insert into articulos (descripcion_art, precio_art, stock_art, stock_min) VALUES
+("Teclados", 20, 10, 5), ("Monitor Samsung", 200, 3, 0), ("Monitor LG", 300, 1, 0), ("SSD WD", 100, 5, 5);
+
+-- 3. Mostrar el código de los articulos y el doble del precio de cada artículo.
+SELECT cod_art, (precio_art * 2) as "precio doble" FROM articulos;
+
+-- 4. Mostrar el código de la factura, número de línea e importe de cada línea (sin considerar impuestos ni descuentos). 
 
 /*
+ 
+3.  
 
-
-
-Nota: L as claves foráneas en los modelos relacionales presentes en este documento se representan en cursiva y
-negrita. 
- 1. Mostrar las provincias 
-2. Nombre y código de las provincias. 
-3. Mostrar el código de los arYculos y el doble del precio de cada arYculo. 
-4. Mostrar el código de la factura, número de línea e importe de cada línea (sin considerar impuestos 
-ni descuentos. 
 5. Mostrar los dis8ntos 8pos de IVA aplicados en las facturas. 
 8
 hps://docs.google.com/document/d/1YUW3DyXscHNKV5iszTRJ -vnKDElzEYDQh7IyV8lqEp4/edit#heading=h.45xqg0sz9w7c
