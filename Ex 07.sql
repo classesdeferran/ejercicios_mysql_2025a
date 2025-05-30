@@ -119,16 +119,32 @@ SELECT AVG(precio * cant_lin) as media FROM lineas_fac GROUP BY cod_fac;
 SELECT descripcion_art, AVG(stock_art) as media, MAX(stock_art) as maximo, MIN(stock_art) as minimo
 FROM articulos
 WHERE descripcion_art like "_o%" AND stock_min > (stock_art / 2)
-GROUP BY descripcion_art;	
+GROUP BY descripcion_art;
+
+-- 14. Número de facturas para cada año. Junto con el año debe aparecer 
+-- el número de facturas de ese año. 
+SELECT YEAR(fecha_fac) as año, COUNT(*) as num_facturas
+FROM facturas
+GROUP BY año;
+
+-- 15. Número de facturas de cada cliente, pero sólo se deben mostrar 
+-- aquellos clientes que tienen menos de 2 facturas. 
+SELECT cod_cli, COUNT(*) as cantidad_facturas
+FROM facturas
+GROUP BY cod_cli
+HAVING cantidad_facturas = 2;
+
+-- 16. Cantidades totales vendidas para cada articulo cuya descripción empieza por “M”. La cantidad total 
+-- vendida de un articulo se calcula sumando las cantidades de todas sus líneas de factura. 
+SELECT a.cod_art, a.descripcion_art, SUM(l.cant_lin)
+FROM articulos a
+NATURAL JOIN lineas_fac l
+where a.descripcion_art like "M%"
+GROUP BY l.cod_art;
+
 /*
+ 
 
-
-14. Número de facturas para cada año. Junto con el año debe aparecer el número de facturas de ese 
-año. 
-15. Número de facturas de cada cliente, pero sólo se deben mostrar aquellos clientes que 8enen más 
-de 15 facturas. 
-16. Can8dades totales vendidas para cada arYculo cuyo código empieza por “F”. La can8dad total 
-vendida de un arYculo se calcula sumando las can8dades de todas sus líneas de factura. 
 17. Código de aquellos arYculos de los que se ha facturado más de 6000 euros. 
  
 18. Número de facturas de cada uno de los clientes cuyo código está entre 241 y 250, con cada IVA 
