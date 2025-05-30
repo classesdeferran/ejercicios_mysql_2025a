@@ -87,13 +87,16 @@ SELECT cod_lin_fac, cod_fac, precio FROM lineas_fac;
 -- 5. Mostrar los distintos tipos de IVA aplicados en las facturas. 
 SELECT distinct(iva) FROM facturas;
 
+-- 6. Mostrar el código y nombre de aquellas provincias cuyo código es menor a HH. 
+SELECT cod_pro, nombre_provincia 
+FROM provincias
+WHERE cod_pro < "HH";
+
 
 /*
 
-5. Mostrar los dis8ntos 8pos de IVA aplicados en las facturas. 
-8
-hps://docs.google.com/document/d/1YUW3DyXscHNKV5iszTRJ -vnKDElzEYDQh7IyV8lqEp4/edit#heading=h.45xqg0sz9w7c
-6. Mostrar el código y nombre de aquellas provincias cuyo código es menor a 20. 
+
+
 7. Mostrar los dis8ntos 8pos de descuento de aplicados por los vendedores que cuyos códigos no 
 superan el valor 50. 
  
