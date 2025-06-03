@@ -57,7 +57,7 @@ FROM proveedores WHERE nombre_proveedor = p_nombre_proveedor;
 IF v_id_proveedor IS NULL THEN
 	INSERT INTO proveedores (nombre_proveedor) VALUES (p_nombre_proveedor);
     SELECT id_proveedor INTO v_id_proveedor
-	FROM proveedores WHERE nombre_p = p_nombre_producto;
+	FROM proveedores WHERE nombre_producto = p_nombre_producto;
 END IF;
 
 SELECT id_producto INTO v_id_producto
@@ -103,9 +103,45 @@ DELIMITER ;
 INSERT INTO clientes(nombre_cliente, apellido_cliente) VALUES
 ("Peter", "Parker"), ("Beyoncé", "Pérez");
 
---  VENTASDE
+--  VENTAS DE PRODUCTOS
 INSERT INTO facturas(id_cliente, id_producto, cantidad)
 VALUES (1, 1, 1);
 INSERT INTO facturas(id_cliente, id_producto, cantidad)
 VALUES (2, 2, 20);
+
+-- CREAR SP PARA VENDER PRODUCTOS
+-- Si el cliente no está, lo añadimos a la tabla
+-- Si el producto no lo tenemos, mostramos un mensaje de error
+-- La salida final será nombre_cliente apellido_cliente 
+-- nombre_producto cantidad precio importe
+("Robin", "Hood", "Iphone 27", 2)
+
+SELECT SUM(f.cantidad * p.precio) as "Total vendido"
+FROM facturas f
+NATURAL JOIN productos p
+WHERE YEAR(f.fecha_compra) = 2023 ;
+
+DROP FUNCTION IF EXISTS facturacion_anual;
+
+DELIMITER $$
+CREATE FUNCTION facturacion_anual (p_year_fact year)
+RETURNS VARCHAR(255)
+DETERMINISTIC
+BEGIN
+DECLARE v_valor decimal(10, 2);
+SELECT SUM(f.cantidad * p.precio) as "Total vendido" INTO v_valor
+FROM facturas f
+NATURAL JOIN productos p
+WHERE YEAR(f.fecha_compra) = p_year_fact ;
+
+IF v_valor IS NULL THEN
+	RETURN concat_ws(" ", "El año", p_year_fact, "no ha habido facturación");
+ELSE
+	RETURN concat_ws(" ", "El año", p_year_fact, "la facturación ha sido", v_valor, "€");
+END IF;
+END $$
+DELIMITER ;
+
+SELECT facturacion_anual(2023);
+
 
