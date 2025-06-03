@@ -142,10 +142,15 @@ NATURAL JOIN lineas_fac l
 where a.descripcion_art like "M%"
 GROUP BY l.cod_art;
 
+-- 17. Código de aquellos artículos de los que se ha facturado más de 400 euros. 
+SELECT cod_art
+FROM lineas_fac
+GROUP BY cod_art
+HAVING SUM(cant_lin * precio) > 400;
 /*
  
 
-17. Código de aquellos arYculos de los que se ha facturado más de 6000 euros. 
+
  
 18. Número de facturas de cada uno de los clientes cuyo código está entre 241 y 250, con cada IVA 
 dis8nto que se les ha aplicado. En cada línea del resultado se debe mostrar un código de cliente, 
