@@ -103,7 +103,9 @@ DELIMITER ;
 INSERT INTO clientes(nombre_cliente, apellido_cliente) VALUES
 ("Peter", "Parker"), ("Beyoncé", "Pérez");
 
+--  VENTASDE
 INSERT INTO facturas(id_cliente, id_producto, cantidad)
 VALUES (1, 1, 1);
-
+INSERT INTO facturas(id_cliente, id_producto, cantidad)
+VALUES (2, 2, 20);
 
