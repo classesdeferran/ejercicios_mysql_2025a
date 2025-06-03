@@ -80,4 +80,30 @@ CALL insertar_productos("Iphone 27", 5000.75, 2, "Apple");
 CALL insertar_productos("Iphone 27", 6000.75, 3, "Apple");
 CALL insertar_productos("S35", 1000, 5, "Samsung");
 
+DROP TRIGGER IF EXISTS tr_verificar_stock;
+DELIMITER //
+CREATE TRIGGER tr_verificar_stock
+BEFORE INSERT ON facturas
+FOR EACH ROW
+BEGIN
+	DECLARE v_stock int;
+    SELECT stock_actual INTO v_stock
+    FROM productos WHERE id_producto = NEW.id_producto;
+    IF v_stock < NEW.cantidad THEN
+		SIGNAL SQLSTATE "45000" 
+        SET MESSAGE_TEXT = "NO hay suficiente stock";
+	ELSE 
+		UPDATE productos set stock_actual = stock_actual - NEW.cantidad,
+        ventas_producto = ventas_producto + NEW.cantidad
+        WHERE id_producto = NEW.id_producto;     
+    END IF;    
+END //
+DELIMITER ;
+
+INSERT INTO clientes(nombre_cliente, apellido_cliente) VALUES
+("Peter", "Parker"), ("Beyoncé", "Pérez");
+
+INSERT INTO facturas(id_cliente, id_producto, cantidad)
+VALUES (1, 1, 1);
+
 
