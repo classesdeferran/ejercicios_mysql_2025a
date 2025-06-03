@@ -10,6 +10,9 @@ ventas_producto int not null,
 id_proveedor int not null
 );
 
+ALTER TABLE productos
+MODIFY COLUMN ventas_producto int DEFAULT 0;
+
 CREATE TABLE proveedores (
 id_proveedor int auto_increment primary key,
 nombre_proveedor varchar(50) not null
@@ -59,12 +62,22 @@ END IF;
 
 SELECT id_producto INTO v_id_producto
 FROM productos WHERE nombre_producto = p_nombre_producto;
-IF 
-
+IF v_id_producto IS NULL THEN
+-- Si v_id_producto es nulo significa que no estaba 
+-- y por eso hay que añadir el producto a la tabla
+	INSERT INTO productos(nombre_producto, precio, stock_actual, id_proveedor)
+    VALUES (p_nombre_producto, p_precio, p_stock, v_id_proveedor);
+    SELECT concat_ws(" ", "Producto", p_nombre_producto, "añadido a la tabla");
+ELSE 
+	UPDATE productos set precio = p_precio, stock_actual = stock_actual + p_stock
+    WHERE id_producto = v_id_producto;
+    SELECT concat_ws(" ", "Producto", p_nombre_producto, "actualizado");
+END IF;
 END $$
 DELIMITER ;
 
 CALL insertar_productos("Iphone 27", 5000.75, 2, "Apple");
-CALL insertar_productos("Iphone 27", 5000.75, 2, "Samsung");
+CALL insertar_productos("Iphone 27", 6000.75, 3, "Apple");
+CALL insertar_productos("S35", 1000, 5, "Samsung");
 
 
