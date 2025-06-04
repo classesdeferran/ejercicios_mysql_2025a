@@ -192,3 +192,59 @@ SELECT @stock_producto_actualizado;
 CALL insertar_productos_2("Teclado Logitech", 50, 2, "Logitech", @stock_producto_actualizado);
 
 SELECT @stock_producto_actualizado;
+
+-- Necesitamos la información completa de la base de datos:
+-- los clientes, qué han comprado, cual es el stock de ese producto, 
+-- la fecha de la factura y quien era el proveedor
+-- Pero no hay que poner los "ids"
+
+
+DROP VIEW IF EXISTS datos_totales;
+CREATE VIEW datos_totales as
+SELECT c.nombre_cliente, c.apellido_cliente, f.fecha_compra, pd.nombre_producto, pd.precio, pd.stock_actual, pd.ventas_producto, pr.nombre_proveedor
+FROM clientes c
+LEFT JOIN facturas f
+ON c.id_cliente = f.id_cliente
+NATURAL JOIN productos pd
+NATURAL JOIN proveedores pr
+ORDER BY f.fecha_compra;
+
+SELECT * FROM datos_totales;
+SELECT nombre_cliente FROM datos_totales;
+
+
+ALTER TABLE clientes
+MODIFY COLUMN id_pais int DEFAULT 1;
+
+insert into clientes (nombre_cliente, apellido_cliente, id_pais) VALUES
+("Michael", "Corleone", 2),("Jean-Luc", "Piccard", 3),("Luc", "Skywalker", 2),
+("Jules", "Verne", 3),("Clark", "Kent", 2),("Leia", "Skywalker", 2);
+
+
+-- Queremos saber qué clientes son del mismo país y que codigo de país es
+SELECT concat_ws(" ", A.nombre_cliente, A.apellido_cliente, A.id_pais) as cliente1,
+concat(B.nombre_cliente, " ", B.apellido_cliente," ", B.id_pais) as cliente2, A.id_pais
+FROM clientes A, clientes B
+WHERE A.id_pais = B.id_pais AND A.id_cliente != B.id_cliente
+ORDER BY A.id_pais;
+
+-- Ver los usuarios actuales
+SELECT * FROM mysql.user;
+
+CREATE USER "admin_tienda"@"127.0.0.1" identified by "1234";
+CREATE USER "admin_tienda"@"%" identified by "1234";
+
+
+
+
+
+GRANT SELECT ON tienda.* TO "admin_tienda"@"127.0.0.1";
+GRANT INSERT, UPDATE, DELETE ON tienda.* TO "admin_tienda"@"127.0.0.1";
+GRANT ALL PRIVILEGES ON tienda.* TO "admin_tienda"@"127.0.0.1" WITH GRANT OPTION;
+GRANT CREATE ROUTINE, EXECUTE ON tienda.* TO "admin_tienda"@"127.0.0.1";
+
+SHOW GRANTS FOR "admin_tienda"@"127.0.0.1";
+SHOW GRANTS FOR "root"@"localhost";
+
+ALTER TABLE clientes
+modify id_pais int default 1;
